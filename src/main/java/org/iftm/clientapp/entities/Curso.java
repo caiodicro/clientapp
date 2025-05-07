@@ -19,7 +19,7 @@ public class Curso implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "curso_name", nullable = false, length = 50)
+    @Column(name = "curso_name", nullable = false, length = 80)
     private String nome;
     @Column(name = "curso_descricao", nullable = false, length = 255)
     private String descricao;
