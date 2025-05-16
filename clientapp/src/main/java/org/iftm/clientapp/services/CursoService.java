@@ -52,7 +52,7 @@ public class CursoService {
         }
     }
 
-    // Regra: Validação do cadasto da DATA DE INICIO DO CURSO
+    // Regra: Validação do cadasto da DATA DE INÍCIO DO CURSO
     public void validarDataInicioCurso(Instant dataInicio) {
         Instant dataLimite = Instant.parse("2024-01-01T07:00:00.00Z");
         if (dataInicio.isBefore(dataLimite)) {
@@ -96,7 +96,7 @@ public class CursoService {
         repositorio.deleteAll();
     }
 
-    // Regra: Atualizar um CURSO
+    // Regra: Atualizar o cadastro do CURSO
     @Transactional
     public Curso update(Long id, Curso updatedCurso) {
         Curso cursoExistente = repositorio.findById(id).orElseThrow(() -> new IllegalArgumentException("Curso com ID " + id + " não encontrado!"));
@@ -128,30 +128,30 @@ public class CursoService {
         return repositorio.findById(id).orElseThrow(() -> new NoSuchElementException("Curso com ID " + id + " não encontrado."));
     }
 
-    // Regra: Buscar curso pelo NOME
+    // Regra: Buscar cursos pelo NOME
     @Transactional(readOnly=true)
     public List<Curso> findByNome(Curso findCurso){
         return repositorio.findByNomeContaining(findCurso.getNome());
     }
 
-    // Regra: Buscar curso por STATUS
+    // Regra: Buscar cursos por STATUS
     @Transactional(readOnly=true)
     public List<Curso> findByStatus(Curso findCurso){
         return repositorio.findByStatus(findCurso.getStatus());
     }
-    // Regra: Buscar curso por DATA DE INÍCIO
+    // Regra: Buscar cursos por DATA DE INÍCIO
     @Transactional(readOnly=true)
     public List<Curso> findByDataInicio(Curso findCurso){
         return repositorio.findByDataInicioAfter(findCurso.getDataInicio());
     }
 
-    // Regra: Buscar curso por NÚMERO DE VAGAS
+    // Regra: Buscar cursos por NÚMERO DE VAGAS
     @Transactional(readOnly=true)
     public List<Curso> findByNumVagas(Curso findCurso){
         return repositorio.findByNumVagasGreaterThanEqual(findCurso.getNumVagas());
     }
 
-    // Regra: Buscar curso por CARGA HORÁRIA
+    // Regra: Buscar cursos por CARGA HORÁRIA
     @Transactional(readOnly=true)
     public List<Curso> findByCargaHoraria(Curso findCurso){
         return repositorio.findByCargaHorariaGreaterThanEqual(findCurso.getCargaHoraria());

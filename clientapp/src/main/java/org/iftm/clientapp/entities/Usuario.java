@@ -31,7 +31,7 @@ public class Usuario implements Serializable{
     private String senha;
     @Column(name = "usuario_nascimento", nullable = false)
     private Instant nascimento;
-    @Column(name = "usuario_endereco", nullable = false, length = 100)
+    @Column(name = "usuario_endereco", nullable = false, length = 255)
     private String endereco;
     @Column(name = "usuario_status", nullable = false,length = 6)
     private String status;
