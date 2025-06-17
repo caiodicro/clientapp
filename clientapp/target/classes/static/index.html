@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Curso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #curso-info {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        #curso-details,
+        #curso-address,
+        #curso-category,
+        #curso-relatives {
+            margin-bottom: 20px;
+            color: blue;
+        }
+
+        #curso-details p,
+        #curso-address p,
+        #curso-category p,
+        #curso-relatives p {
+            margin: 5px 0;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-container input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .input-container button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="curso-info">
+        <h1>Informações do Curso</h1>
+        <!-- Campo para digitar o ID do curso -->
+        <div class="input-container">
+            <label for="curso-id">Digite o ID do curso:</label>
+            <input type="number" id="curso-id" placeholder="Ex: 1" min="1">
+            <button onclick="fetchData()">Pesquisar</button>
+        </div>
+        <h2>Curso:</h2>
+        <div id="curso-details"></div>
+    </div>
+
+    <script>
+        function fetchData() {
+            const cursoId = document.getElementById('curso-id').value;
+            if (!cursoId) {
+                alert("O campo ID é obrigatorio!");
+                return;
+            }
+            const uri = `http://localhost:8080/cursos/id/${cursoId}`;
+
+            async function fetchCursoData() {
+                const response = await fetch(uri);
+                if (!response.ok) {
+                    alert("Não foi possível retornar os dados do curso!");
+                    document.getElementById('curso-id').value = "";
+                }
+                else {
+                    const json = await response.json();
+                    const dadosCurso = document.getElementById('curso-details');
+                    dadosCurso.innerHTML =
+                        `<p><strong>Nome:</strong> ${json.nome} </p>
+                    <p><strong>Descrição:</strong> ${json.descricao}</p>
+                    <p><strong>Carga Horária:</strong> ${json.cargaHoraria}</p>
+                    <p><strong>Numero de Vagas:</strong> ${json.numVagas}</p>
+                    <p><strong>Data de Início:</strong> ${new Date(json.dataInicio).toLocaleDateString()}</p>
+                    <p><strong>Data de Término:</strong> ${new Date(json.dataTermino).toLocaleDateString()}</p>
+                    <p><strong>Status:</strong> ${json.status}</p>`;
+                }
+            }
+            fetchCursoData();
+        }
+    </script>
+</body>
+
+</html>
