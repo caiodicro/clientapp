@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informações de Usuários</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    #usuario-info {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .input-container {
+      margin-bottom: 20px;
+    }
+
+    .input-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-container input,
+    .input-container select {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .input-container button {
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .input-container button:hover {
+      background-color: #1e7e34;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table th {
+      background-color: #28a745;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    table td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      background-color: #fefefe;
+      font-size: 14px;
+    }
+
+    table tr:hover td {
+      background-color: #e8f0e8;
+    }
+
+    table tr:nth-child(even) td {
+      background-color: #f7f9f7;
+    }
+
+    .info-card {
+      background-color: #f9f9f9;
+      border-left: 5px solid #28a745;
+      padding: 15px 20px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card p {
+      margin: 8px 0;
+      font-size: 15px;
+      color: #444;
+    }
+
+    .info-card p strong {
+      color: #28a745;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .link-voltar {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #28a745;
+      text-decoration: none;
+    }
+
+    .link-voltar:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="usuario-info">
+    <h1>Consulta de Usuários</h1>
+
+    <div class="input-container">
+      <label for="usuario-id">Buscar por ID:</label>
+      <input type="number" id="usuario-id" placeholder="Ex: 1" min="1" />
+      <button onclick="buscarUsuarioPorId()">Buscar</button>
+    </div>
+
+    <div class="input-container">
+      <label for="usuario-email">Buscar por E-mail:</label>
+      <input type="email" id="usuario-email" placeholder="Ex: exemplo@iftm.edu.br" />
+      <button onclick="buscarUsuarioPorEmail()">Buscar</button>
+    </div>
+
+    <div class="input-container">
+      <label for="status">Buscar por Status:</label>
+      <select id="status">
+        <option value="">Selecione</option>
+        <option value="Ativo">Ativo</option>
+        <option value="Inativo">Inativo</option>
+      </select>
+      <button onclick="buscarUsuariosPorStatus()">Buscar</button>
+      <button onclick="limparCampos()">Limpar</button>
+    </div>
+
+    <h2>Resultado:</h2>
+    <div id="usuario-details"></div>
+    <div id="lista-usuarios-content"></div>
+    <a href="index.html" class="link-voltar">← Voltar para cursos</a>
+  </div>
+
+  <script>
+    async function buscarUsuarioPorId() {
+      const id = document.getElementById("usuario-id").value;
+      const div = document.getElementById("usuario-details");
+      div.innerHTML = "";
+
+      if (!id || parseInt(id) < 1) {
+        alert("Informe um ID válido.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/usuarios/id/${id}`);
+        if (!response.ok) throw new Error("Usuário com esse ID não encontrado.");
+
+        const usuario = await response.json();
+        div.innerHTML = gerarCardUsuario(usuario);
+      } catch (err) {
+        div.innerHTML = `<p class="error">${err.message}</p>`;
+      }
+    }
+
+    async function buscarUsuarioPorEmail() {
+      const email = document.getElementById("usuario-email").value;
+      const div = document.getElementById("usuario-details");
+      div.innerHTML = "";
+
+      if (!email) {
+        alert("Informe o e-mail do usuário.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/usuarios/email/${email}`);
+        if (!response.ok) throw new Error("Usuário com esse e-mail não encontrado.");
+
+        const usuario = await response.json();
+        div.innerHTML = gerarCardUsuario(usuario);
+      } catch (err) {
+        div.innerHTML = `<p class="error">${err.message}</p>`;
+      }
+    }
+
+    async function buscarUsuariosPorStatus() {
+      const status = document.getElementById("status").value;
+      const div = document.getElementById("lista-usuarios-content");
+      div.innerHTML = "";
+
+      if (!status) {
+        alert("Selecione um status.");
+        return;
+      }
+
+      div.innerHTML = "Buscando usuários...";
+
+      try {
+        const response = await fetch(`http://localhost:8080/usuarios/status/${status}`);
+        if (!response.ok) throw new Error("Erro ao buscar usuários.");
+
+        const usuarios = await response.json();
+
+        if (usuarios.length === 0) {
+          div.innerHTML = "<p>Nenhum usuário encontrado com esse status.</p>";
+          return;
+        }
+
+        let tabela = `
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Nascimento</th>
+                <th>Endereço</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>`;
+
+        usuarios.forEach(u => {
+          tabela += `
+            <tr>
+              <td>${u.id}</td>
+              <td>${u.nome}</td>
+              <td>${u.cpf}</td>
+              <td>${u.email}</td>
+              <td>${new Date(u.nascimento).toLocaleDateString()}</td>
+              <td>${u.endereco}</td>
+              <td>${u.status}</td>
+            </tr>`;
+        });
+
+        tabela += `</tbody></table>`;
+        div.innerHTML = tabela;
+      } catch (err) {
+        div.innerHTML = `<p class="error">${err.message}</p>`;
+      }
+    }
+
+    function gerarCardUsuario(usuario) {
+      return `
+        <div class="info-card">
+          <p><strong>Nome:</strong> ${usuario.nome}</p>
+          <p><strong>CPF:</strong> ${usuario.cpf}</p>
+          <p><strong>Email:</strong> ${usuario.email}</p>
+          <p><strong>Data de Nascimento:</strong> ${new Date(usuario.nascimento).toLocaleDateString()}</p>
+          <p><strong>Endereço:</strong> ${usuario.endereco}</p>
+          <p><strong>Status:</strong> ${usuario.status}</p>
+        </div>`;
+    }
+
+    function limparCampos() {
+      document.getElementById("usuario-id").value = "";
+      document.getElementById("usuario-email").value = "";
+      document.getElementById("status").value = "";
+      document.getElementById("usuario-details").innerHTML = "";
+      document.getElementById("lista-usuarios-content").innerHTML = "";
+    }
+  </script>
+</body>
+
+</html>
