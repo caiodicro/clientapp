@@ -11,17 +11,18 @@ import org.springframework.stereotype.Repository;
 public interface CursoRepository extends JpaRepository<Curso, Long>{
     
     // Método para pesquisar curso pelo nome
-    public List<Curso> findByNomeContaining(String nome); 
+    public List<Curso> findByNomeLike(String nome); 
 
     // Método para pesquisar cursos por status( Ex.: Cursos Ativos e Inativos)
     public List<Curso> findByStatus(String status);
 
-    // Método para pesquisar cursos a partir da data de inicio (Ex.: Cursos que iniciam a partis de 01/01/2025)
-    public List<Curso> findByDataInicioAfter(Instant datainicio);
+    // Método para pesquisar cursos a partir da data de inicio (Ex.: Cursos que iniciam a partir de 01/01/2025)
+    public List<Curso> findByDataInicioAfter(Instant dataInicio);
 
     // Método para pesquisar cursos a partir do número de vagas (Ex.: Cursos com 20 vagas ou mais)
-    public List<Curso> findByNumVagasGreaterThanEqual(int numDeVagas);
+    public List<Curso> findByNumVagasGreaterThanEqual(Integer numVagas);
 
      // Método para pesquisar cursos a partir da carga horária (Ex.: Cursos com carga horaria maior que 15)
-    public List<Curso> findByCargaHorariaGreaterThanEqual(int cargahoraria);
+    public List<Curso> findByCargaHorariaGreaterThanEqual(Integer cargahoraria);
+
 }

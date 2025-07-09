@@ -3,16 +3,22 @@ package org.iftm.clientapp.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="tb_usuario")
-public class Usuario implements Serializable{
+@Table(name = "tb_usuario")
+
+public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -28,18 +34,25 @@ public class Usuario implements Serializable{
     @Column(name = "usuario_email", nullable = false, length = 50)
     private String email;
     @Column(name = "usuario_senha", nullable = false, length = 20)
+    @JsonIgnore
     private String senha;
     @Column(name = "usuario_nascimento", nullable = false)
     private Instant nascimento;
-    @Column(name = "usuario_endereco", nullable = false, length = 100)
+    @Column(name = "usuario_endereco", nullable = false, length = 255)
     private String endereco;
-    @Column(name = "usuario_status", nullable = false,length = 6)
+    @Column(nullable = false)
     private String status;
+
+    @OneToOne
+    @JoinColumn(name = "matricula_fk", referencedColumnName = "id")
+    @JsonIgnoreProperties("usuario")
+    private Matricula matricula;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String cpf, String tipo, String email, String senha, Instant nascimento, String endereco, String status) {
+    public Usuario(Long id, String nome, String cpf, String tipo, String email, String senha, Instant nascimento,
+            String endereco, String status, Matricula matricula) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -49,10 +62,7 @@ public class Usuario implements Serializable{
         this.nascimento = nascimento;
         this.endereco = endereco;
         this.status = status;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+        this.matricula = matricula;
     }
 
     public Long getId() {
@@ -77,6 +87,14 @@ public class Usuario implements Serializable{
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getEmail() {
@@ -119,14 +137,11 @@ public class Usuario implements Serializable{
         this.status = status;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Matricula getMatricula() {
+        return matricula;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setMatricula(Matricula matricula) {
+        this.matricula = matricula;
     }
-
-
-
 }

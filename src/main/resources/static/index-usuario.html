@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informações de Usuários</title>
+  <link rel="stylesheet" href="style-usuario.css" />
+</head>
+
+<body>
+  <div id="usuario-info">
+    <h1>Consulta de Usuários e Matrículas</h1>
+
+    <div class="input-container">
+      <label for="usuario-id">Buscar por ID de Usuário:</label>
+      <input type="number" id="usuario-id" placeholder="Ex: 1" min="1" />
+      <button onclick="buscarUsuarioPorId()">Buscar</button>
+    </div>
+
+    <div class="input-container">
+      <label for="usuario-email">Buscar por E-mail de Usuário:</label>
+      <input type="email" id="usuario-email" placeholder="Ex: exemplo@iftm.edu.br" />
+      <button onclick="buscarUsuarioPorEmail()">Buscar</button>
+    </div>
+
+    <div class="input-container">
+      <label for="status">Buscar Usuários por Status:</label>
+      <select id="status">
+        <option value="">Selecione</option>
+        <option value="Ativo">Ativo</option>
+        <option value="Inativo">Inativo</option>
+      </select>
+      <button onclick="buscarUsuariosPorStatus()">Buscar</button>
+      <button onclick="buscarTodasMatriculas()">Buscar Todas as Matrículas</button>
+      <button onclick="limparCampos()">Limpar</button>
+    </div>
+
+    <h2>Resultado da Busca por Usuário:</h2>
+    <div id="usuario-details"></div>
+    <div id="lista-usuarios-content"></div>
+
+    <h2>Matrículas:</h2>
+    <div id="lista-matriculas-content"></div>
+
+    <a href="index.html" class="link-voltar">← Voltar para cursos</a>
+  </div>
+
+  <script src="script-usuario.js"></script>
+</body>
+
+</html>
