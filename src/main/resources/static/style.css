@@ -106,3 +106,39 @@ table tr:nth-child(even) td {
     color: red;
     font-weight: bold;
 }
+
+/* Estilo para o link botão "Ir para página de usuários" */
+.link-usuario {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745; /* Verde */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.link-usuario:hover {
+    background-color: #1e7e34;
+}
+
+/* Estilo para o link botão "Ir para Matrículas" (caso precise ajustar) */
+.button-link {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Azul */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-link:hover {
+    background-color: #0056b3;
+}
