@@ -1,1 +1,1 @@
-Projeto de Desenvolvimneto de Sistemas - IFTM_Udi_Centro
+Projeto de Desenvolvimento de Sistemas - IFTM_Udi_Centro
